@@ -1,8 +1,8 @@
-name: DEPLOY
+name: DEPLOY TO SHARED HOSTING
 on:
   push:
     branches:
-    - master
+    - main
 
 jobs:
   deploy:
