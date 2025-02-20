@@ -1,18 +1,29 @@
-name: DEPLOY
+name: Deploy
 on:
   push:
-    branches: [main]
+    branches:
+      - main  # Or your default branch
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: rsync deployments
-      uses: burnett01/rsync-deployments@7.0.2
+    - uses: actions/checkout@v2
+      
+    - name: 🏗️ Build Jekyll site 
+      run: |
+        bundle install
+        bundle exec jekyll build
+
+    - name: 🚀 Deploy via SSH
+      uses: appleboy/scp-action@master
       with:
-        switches: -avzr --delete
-        remote_path: /
-        remote_host: kfskinpusat.com
-        remote_user: kfskinpu
-        remote_key: ${{ secrets.DEPLOY_KEY }}
+        host: kfskinpusat.com
+        username: kfskinpu
+        password: ${{ secrets.DEPLOY_KEY }}
+        port: 22
+        source: "./_site/*" # Adjust if required
+        target: "/test.kfskinpusat.com" # Set to your deployment directory (for example /public_html)
+        strip_components: 1 # This ensures that a subdirectory is not created
+     
