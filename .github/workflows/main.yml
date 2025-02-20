@@ -1,20 +1,18 @@
+name: DEPLOY
 on:
   push:
-    branches: [ main ]
-name: Deploy website on push
+    branches:
+    - main
 jobs:
-  web-deploy:
-    name: Auto Deploy
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Get latest code
-      uses: actions/checkout@v2.3.2
-
-    - name: Sync files
-      uses: burnett01/rsync-deployments@4.1
+    - uses: actions/checkout@v3
+    - name: rsync deployments
+      uses: burnett01/rsync-deployments@7.0.2
       with:
-        switches: -avzr --delete --exclude=".git" --exclude=".github"
-        path: /
+        switches: -avzr --delete
+        path: src/
         remote_path: /home/kfskinpu/test.kfskinpusat.com
         remote_host: kfskinpusat.com
         remote_user: kfskinpu
