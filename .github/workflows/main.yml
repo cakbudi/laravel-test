@@ -4,17 +4,17 @@ on:
     branches:
       - main  
 jobs:
- deploy:
+  deploy:
     runs-on: ubuntu-latest
-    
     steps:
-     - name: Checkout
-     - uses: actions/checkout@v3
-     
-     - name: Deploy via SSH
-       uses: ilCollez/ssh-scp-deploy@v1.3.0
-       with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USERNAME }}
-          key: ${{ secrets.DEPLOY_KEY }}  
-          remote-path: "/test.kfskinpusat.com"
+    - uses: actions/checkout@v3
+    - name: rsync deployments
+      uses: burnett01/rsync-deployments@7.0.2
+      with:
+        switches: -avzr --delete
+        path: src/
+        remote_path: ${{ secrets.DEPLOY_PATH }}
+        remote_host: ${{ secrets.DEPLOY_HOST }}
+        remote_port: ${{ secrets.DEPLOY_PORT }}
+        remote_user: ${{ secrets.DEPLOY_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}
