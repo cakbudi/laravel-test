@@ -5,19 +5,15 @@ on:
       - main  # Or your default branch
 
 jobs:
-  build:
+ deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
-      
- 
-    - name: 🚀 Deploy via SSH
-      uses: ilCollez/ssh-scp-deploy@v1.3.0
-        
-        with:
-        host: ${{ secrets.DEPLOY_HOST }} # "example.com"
-        username: ${{ secrets.DEPLOY_USERNAME }} # "user"
-        key: ${{ secrets.DEPLOY_KEY }}  
-    
-        remote-path: "/test.kfskinpusat.com"
+     - uses: actions/checkout@v3
+     - name: 🚀 Deploy via SSH
+       uses: ilCollez/ssh-scp-deploy@v1.3.0
+       with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}  
+          remote-path: "/test.kfskinpusat.com"
