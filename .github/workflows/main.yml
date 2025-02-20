@@ -2,15 +2,16 @@ name: Deploy
 on:
   push:
     branches:
-      - main  # Or your default branch
-
+      - main  
 jobs:
  deploy:
     runs-on: ubuntu-latest
     
     steps:
+     - name: Checkout
      - uses: actions/checkout@v3
-     - name: 🚀 Deploy via SSH
+     
+     - name: Deploy via SSH
        uses: ilCollez/ssh-scp-deploy@v1.3.0
        with:
           host: ${{ secrets.DEPLOY_HOST }}
